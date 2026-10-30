@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "id": "whale.meme-notebook",
+  "name": "萌百查梗与学习",
+  "version": "2.0.0",
+  "description": "按需检索萌百、核对来源引文、积累隔离笔记",
+  "author": {"name": "Treetreewu", "url": "https://github.com/Treetreewu"},
+  "license": "MIT",
+  "urls": {"repository": "https://github.com/Treetreewu/astrbot_plugin_whale_memes"},
+  "i18n": {"default_locale": "zh-CN", "supported_locales": ["zh-CN"]},
+  "host_application": {"min_version": "1.3.18", "max_version": "1.3.99"},
+  "sdk": {"min_version": "2.19.0", "max_version": "2.19.99"},
+  "dependencies": [],
+  "capabilities": ["web.search", "web.fetch", "llm.generate"]
+}

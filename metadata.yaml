@@ -1,0 +1,6 @@
+name: whale_meme_notebook
+display_name: 萌百查梗与学习
+desc: 查缓存、按需检索、核对来源引文并学习，保留独立会话笔记
+version: v2.0.0
+author: Treetreewu
+repo: https://github.com/Treetreewu/astrbot_plugin_whale_memes

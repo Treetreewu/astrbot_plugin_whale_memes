@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "ttl_days": 30,
+  "max_notes_per_scope": 500,
+  "max_notes_total": 5000,
+  "max_searches": 2,
+  "max_results": 3,
+  "max_pages": 2,
+  "max_concurrent": 2,
+  "learning_per_hour": 6,
+  "timeout_seconds": 45,
+  "operation_timeout_seconds": 12,
+  "max_source_chars": 8000,
+  "allow_model_discovery": true,
+  "allow_search_excerpt": true,
+  "storage_path": "",
+  "model_task": "learner",
+  "provider_id": "",
+  "maibot_persona": "maibot-native-v1"
+}

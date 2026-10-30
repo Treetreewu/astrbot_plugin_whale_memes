@@ -1,0 +1,92 @@
+{
+  "enabled": {
+    "description": "启用查梗学习",
+    "type": "bool",
+    "default": true
+  },
+  "ttl_days": {
+    "description": "资料复核周期（天）",
+    "type": "int",
+    "default": 30
+  },
+  "max_notes_per_scope": {
+    "description": "每会话最大笔记数",
+    "type": "int",
+    "default": 500
+  },
+  "max_notes_total": {
+    "description": "数据库最大笔记数",
+    "type": "int",
+    "default": 5000
+  },
+  "max_searches": {
+    "description": "每次最多查询数（1–2）",
+    "type": "int",
+    "default": 2
+  },
+  "max_results": {
+    "description": "每次查询最多候选数（1–5）",
+    "type": "int",
+    "default": 3
+  },
+  "max_pages": {
+    "description": "每次最多读取页面数（0–3）",
+    "type": "int",
+    "default": 2
+  },
+  "max_concurrent": {
+    "description": "最大并发学习数（1–4）",
+    "type": "int",
+    "default": 2
+  },
+  "learning_per_hour": {
+    "description": "每会话每小时最多学习次数，失败也计入",
+    "type": "int",
+    "default": 6
+  },
+  "timeout_seconds": {
+    "description": "单次学习总超时秒数（5–50）",
+    "type": "int",
+    "default": 45
+  },
+  "operation_timeout_seconds": {
+    "description": "单次外部调用超时秒数（1–30）",
+    "type": "int",
+    "default": 12
+  },
+  "max_source_chars": {
+    "description": "每个来源最多输入字符",
+    "type": "int",
+    "default": 8000
+  },
+  "allow_model_discovery": {
+    "description": "原生搜索不可用时允许模型发现链接；不能直接作为证据",
+    "type": "bool",
+    "default": true
+  },
+  "allow_search_excerpt": {
+    "description": "允许基于原生搜索摘要学习，始终标注摘要等级",
+    "type": "bool",
+    "default": true
+  },
+  "storage_path": {
+    "description": "数据库路径，留空使用原生数据目录",
+    "type": "string",
+    "default": ""
+  },
+  "model_task": {
+    "description": "原生模型任务名",
+    "type": "string",
+    "default": "learner"
+  },
+  "provider_id": {
+    "description": "仅 AstrBot 使用的模型覆盖，此处留空",
+    "type": "string",
+    "default": ""
+  },
+  "maibot_persona": {
+    "description": "MaiBot 笔记人格作用域",
+    "type": "string",
+    "default": "maibot-native-v1"
+  }
+}

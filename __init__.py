@@ -1,0 +1,1 @@
+"""Standalone plugin package."""
