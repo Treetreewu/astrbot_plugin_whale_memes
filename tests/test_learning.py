@@ -83,6 +83,35 @@ class LearningTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual((await self.run_note("forget"))["deleted"], 1)
         self.assertEqual((await self.run_note("lookup"))["notes"], [])
 
+    async def test_refresh_alias_updates_canonical_note_even_without_returned_alias(self):
+        await self.run_note()
+        self.backend.generate.return_value = synthesis(meaning="更正后的含义", aliases=[])
+        refreshed = await self.run_note("refresh", term="测试别名")
+        self.assertEqual(refreshed["status"], "learned")
+        for term in ("测试梗", "测试别名"):
+            result = await self.run_note("learn", term=term)
+            self.assertEqual(result["status"], "cached")
+            self.assertEqual(len(result["notes"]), 1)
+            self.assertEqual(result["notes"][0]["term"], "测试梗")
+            self.assertEqual(result["notes"][0]["meaning"], "更正后的含义")
+        self.assertEqual((await self.run_note("forget"))["deleted"], 1)
+        self.assertEqual((await self.run_note("lookup", term="测试别名"))["notes"], [])
+
+    async def test_expired_alias_research_updates_original_and_preserves_forget_barrier(self):
+        await self.run_note()
+        with self.app.store.db() as db:
+            db.execute("UPDATE notes SET checked_at=0")
+        self.backend.generate.return_value = synthesis(meaning="重新核实")
+        result = await self.run_note(term="测试别名")
+        self.assertEqual(result["notes"][0]["term"], "测试梗")
+        self.assertEqual((await self.run_note("lookup"))["notes"][0]["meaning"], "重新核实")
+        async def forget_during_generate(*args):
+            await self.run_note("forget")
+            return synthesis(meaning="不应恢复")
+        self.backend.generate.side_effect = forget_during_generate
+        self.assertEqual((await self.run_note("refresh", term="测试别名"))["status"], "superseded")
+        self.assertEqual((await self.run_note("lookup", term="测试别名"))["notes"], [])
+
     async def test_forged_quote_and_unknown_source_are_not_saved(self):
         for value in (synthesis(evidence_quote="这句话没有出现在任何真实的检索资料里面。"),
                       synthesis(source_id=8), synthesis(source_id=True), synthesis(relevant=False), "not JSON"):

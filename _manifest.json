@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "id": "whale.meme-notebook",
   "name": "萌百查梗与学习",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "按需检索萌百、核对来源引文、积累隔离笔记",
   "author": {"name": "Treetreewu", "url": "https://github.com/Treetreewu"},
   "license": "MIT",

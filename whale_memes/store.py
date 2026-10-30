@@ -40,7 +40,7 @@ class Store:
                     "SELECT term_key,term,note,checked_at,hits FROM notes WHERE scope=?", (scope,)):
                 note = json.loads(encoded)
                 names = [stored, *(normalize(a) for a in note.get("aliases", []))]
-                rank = 2 if name in names else 1 if any(name in n for n in names) else 0
+                rank = 3 if name == stored else 2 if name in names else 1 if any(name in n for n in names) else 0
                 if rank:
                     stale = now - checked >= self.config.ttl_days * 86400
                     trusted = note.get("verification") == "source_quote_matched"
@@ -78,6 +78,20 @@ class Store:
             current = db.execute("SELECT version FROM generations WHERE scope=?", (scope,)).fetchone()
             if current is None or current[0] != expected:
                 return False
+            # Resolve aliases inside the same transaction as the generation
+            # check and upsert. A refresh must replace the canonical record.
+            key = normalize(term)
+            rows = list(db.execute("SELECT term_key,term,note FROM notes WHERE scope=?", (scope,)))
+            exact = next((row for row in rows if row[0] == key), None)
+            aliases = [row for row in rows if key in [normalize(a) for a in json.loads(row[2]).get("aliases", [])]]
+            if exact is None and len(aliases) > 1:
+                raise ValueError("Ambiguous alias; refresh a canonical term")
+            target = exact or (aliases[0] if aliases else None)
+            if target:
+                old = json.loads(target[2])
+                retained = ([term] if key != target[0] else []) + note.get("aliases", []) + old.get("aliases", [])
+                note = {**note, "aliases": list(dict.fromkeys(retained))[:5]}
+                term = target[1]
             db.execute("""INSERT INTO notes(scope,term_key,term,note,checked_at,used_at) VALUES(?,?,?,?,?,?)
                 ON CONFLICT(scope,term_key) DO UPDATE SET term=excluded.term,note=excluded.note,
                 checked_at=excluded.checked_at,used_at=excluded.used_at""",

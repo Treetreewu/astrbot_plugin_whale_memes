@@ -11,7 +11,7 @@ from .whale_memes.config import Config
 from .whale_memes.learning import DESCRIPTION, Learning
 
 
-@star.register("whale_meme_notebook", "Treetreewu", "萌百查梗与学习", "2.0.0")
+@star.register("whale_meme_notebook", "Treetreewu", "萌百查梗与学习", "2.0.1")
 class MemePlugin(star.Star):
     def __init__(self, context, config=None):
         super().__init__(context)
